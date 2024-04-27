@@ -1,4 +1,4 @@
-const Message = require("../models/messageModel.js")
+import Message from "../models/messageModel";
 
 import { Request, Response } from "express"
 import { Number } from "mongoose";
@@ -29,13 +29,8 @@ exports.getMessages = async (req: Request, res: Response) => {
       },
     }).sort({ updatedAt: 1 });
 
-    interface Msg {
-      sender: Number,
-      message: {
-        text: String
-      }
-    }
-    const projectedMessages = messages.map((msg: Msg) => {
+    const projectedMessages = messages.map((msg) => {
+      if (msg.message == null) return
       return {
         fromSelf: msg.sender.toString() === from,
         message: msg.message.text,

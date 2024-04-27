@@ -1,14 +1,12 @@
 import userRoutes from "./routes/userRoutes";
 import messageRoutes from "./routes/messageRoutes";
-
 import { Server } from "socket.io";
-
 import cors from "cors";
 import mongoose from "mongoose";
 import express from "express";
-const app = express();
-
 require("dotenv").config();
+
+const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/v1", userRoutes);
@@ -40,6 +38,4 @@ io.on("connection", (socket) => {
     data();
   })
 })
-
-
 

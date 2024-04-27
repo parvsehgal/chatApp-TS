@@ -1,5 +1,5 @@
-const User = require("../models/userModel");
-const bcrypt = require("bcrypt");
+import User from "../models/userModel";
+import bcrypt from 'bcrypt';
 
 import { Request, Response } from "express"
 

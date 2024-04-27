@@ -8,14 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const User = require("../models/userModel");
-const bcrypt = require("bcrypt");
+const userModel_1 = __importDefault(require("../models/userModel"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 exports.registerController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, password } = req.body;
-        const doesExist = yield User.findOne({ name: name });
-        const passExist = yield User.findOne({ email: email });
+        const doesExist = yield userModel_1.default.findOne({ name: name });
+        const passExist = yield userModel_1.default.findOne({ email: email });
         if (doesExist) {
             res.json({ msg: "username already exist", stat: 500 });
         }
@@ -23,8 +26,8 @@ exports.registerController = (req, res) => __awaiter(void 0, void 0, void 0, fun
             res.json({ msg: "Email is already registered", stat: 500 });
         }
         else {
-            const hashedPassword = yield bcrypt.hash(password, 10);
-            const newUser = yield User.create({
+            const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+            const newUser = yield userModel_1.default.create({
                 name: name,
                 email: email,
                 password: hashedPassword,
@@ -41,9 +44,9 @@ exports.registerController = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.loginController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, password } = req.body;
-        const doesUser = yield User.findOne({ name: name });
+        const doesUser = yield userModel_1.default.findOne({ name: name });
         if (doesUser) {
-            const isPasswordCorrect = yield bcrypt.compare(password, doesUser.password);
+            const isPasswordCorrect = yield bcrypt_1.default.compare(password, doesUser.password);
             if (isPasswordCorrect) {
                 doesUser.password = "";
                 console.log(doesUser);
@@ -66,7 +69,7 @@ exports.loginController = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.getAllContacts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { _id } = req.body;
-        const contacts = yield User.find({ _id: { $ne: _id } });
+        const contacts = yield userModel_1.default.find({ _id: { $ne: _id } });
         console.log(_id);
         res.json({ msg: "records of all users", users: contacts });
     }
